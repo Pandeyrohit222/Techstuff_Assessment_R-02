@@ -1,21 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-  Container,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-  Typography,
-  Box,
-  Pagination,
-} from '@mui/material';
-import { Tabs, Tab, CircularProgress, Alert } from '@mui/material';
 
 const LIMIT = 10;
 
@@ -79,120 +64,118 @@ export default function PokePage() {
   const pageCount = Math.ceil(count / LIMIT);
 
   return (
-    <Container maxWidth="md" sx={{ pt: 4 }}>
-      <Typography variant="h4" gutterBottom>Pokémon Table</Typography>
+    <div className="max-w-4xl mx-auto pt-8 px-4">
+      <h1 className="text-3xl font-extrabold mb-4">Pokémon Table</h1>
       {error && (
-        <Box mb={2}><Typography color="error">{error}</Typography></Box>
+        <div className="mb-4">
+          <span className="text-red-600 font-semibold">{error}</span>
+        </div>
       )}
-      <TableContainer component={Paper} sx={{ minHeight: 400 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Sr. No.</TableCell>
-              <TableCell>Poke Name</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
+      <div className="bg-white shadow rounded-lg min-h-[200px] mb-8 overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="px-4 py-2 text-left font-semibold">Sr. No.</th>
+              <th className="px-4 py-2 text-left font-semibold">Poke Name</th>
+            </tr>
+          </thead>
+          <tbody>
             {loading ? (
-              <TableRow>
-                <TableCell colSpan={2} align="center">
+              <tr>
+                <td colSpan={2} className="text-center py-8">
                   Loading...
-                </TableCell>
-              </TableRow>
+                </td>
+              </tr>
             ) : pokemons.length > 0 ? (
               pokemons.map((pokemon, idx) => (
-                <TableRow key={pokemon.name} hover style={{ cursor: 'pointer' }} onClick={() => handlePokemonClick(pokemon)}>
-                  <TableCell>{(page - 1) * LIMIT + idx + 1}</TableCell>
-                  <TableCell sx={{ fontWeight: 500, fontSize: 18, color: '#1976d2' }}>{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</TableCell>
-                </TableRow>
+                <tr
+                  key={pokemon.name}
+                  className="hover:bg-blue-50 cursor-pointer"
+                  onClick={() => handlePokemonClick(pokemon)}
+                >
+                  <td className="px-4 py-2">
+                    {(page - 1) * LIMIT + idx + 1}
+                  </td>
+                  <td className="px-4 py-2 font-medium text-blue-700 text-lg">
+                    {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+                  </td>
+                </tr>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={2} align="center">
+              <tr>
+                <td colSpan={2} className="text-center py-8">
                   No Pokémon found.
-                </TableCell>
-              </TableRow>
+                </td>
+              </tr>
             )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Box display="flex" alignItems="center" justifyContent="space-between" mt={2}>
-        <Typography>Total: {count}</Typography>
-        <Box>
-          <Button onClick={handlePrev} disabled={page === 1} sx={{ mr: 1 }}>Prev.</Button>
-          <Typography component="span" sx={{ mx: 1 }}>{page}</Typography>
-          <Button onClick={handleNext} disabled={page >= pageCount}>Next</Button>
-        </Box>
-      </Box>
-      <Box display="flex" gap={4} mt={4}>
-        <Box flex={1}>
-          {/* Table Section (Left) */}
-          <TableContainer component={Paper} sx={{ minHeight: 400 }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Sr. No.</TableCell>
-                  <TableCell>Poke Name</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {loading ? (
-                  <TableRow>
-                    <TableCell colSpan={2} align="center">
-                      <CircularProgress size={28} />
-                    </TableCell>
-                  </TableRow>
-                ) : pokemons.length > 0 ? (
-                  pokemons.map((pokemon, idx) => (
-                    <TableRow key={pokemon.name} hover style={{ cursor: 'pointer' }} onClick={() => handlePokemonClick(pokemon)}>
-                      <TableCell>{(page - 1) * LIMIT + idx + 1}</TableCell>
-                      <TableCell sx={{ fontWeight: 500, fontSize: 18, color: '#1976d2' }}>{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={2} align="center">
-                      No Pokémon found.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Box display="flex" alignItems="center" justifyContent="space-between" mt={2}>
-            <Typography>Total: {count}</Typography>
-            <Box>
-              <Button onClick={handlePrev} disabled={page === 1} sx={{ mr: 1 }}>Prev.</Button>
-              <Typography component="span" sx={{ mx: 1 }}>{page}</Typography>
-              <Button onClick={handleNext} disabled={page >= pageCount}>Next</Button>
-            </Box>
-          </Box>
-        </Box>
-        <Box flex={1} minWidth={340}>
+          </tbody>
+        </table>
+      </div>
+      <div className="flex items-center justify-between mt-4 mb-8">
+        <span>Total: {count}</span>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handlePrev}
+            disabled={page === 1}
+            className="px-4 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-60"
+          >
+            Prev.
+          </button>
+          <span className="font-semibold mx-2">{page}</span>
+          <button
+            onClick={handleNext}
+            disabled={page >= pageCount}
+            className="px-4 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-60"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+      <div className="flex flex-col md:flex-row gap-8 mt-8">
+        <div className="w-full md:w-1/2">
+          {/* Table Section (Left) - Already above */}
+        </div>
+        <div className="w-full md:w-1/2 min-w-[340px]">
           {/* Detail Section (Right) */}
-          {detailLoading && <Box mt={4}><CircularProgress /></Box>}
-          {detailError && <Alert severity="error">{detailError}</Alert>}
+          {detailLoading && (
+            <div className="flex justify-center mt-6">
+              <span className="loader w-8 h-8 border-4 border-t-4 border-blue-600 rounded-full animate-spin" />
+            </div>
+          )}
+          {detailError && (
+            <div className="mt-4 text-red-700 font-semibold border border-red-200 bg-red-50 rounded p-2">
+              {detailError}
+            </div>
+          )}
           {selectedPokemon && !detailLoading && (
-            <Box>
-              <Typography variant="h4" fontWeight={700} mb={2}>
+            <div>
+              <h2 className="text-2xl font-bold mb-2">
                 {selectedPokemon.name.charAt(0).toUpperCase() + selectedPokemon.name.slice(1)}
-              </Typography>
-              <Tabs value={activeType} onChange={(e, v) => setActiveType(v)} variant="scrollable" sx={{ mb: 2, borderBottom: 1, borderColor: 'divider', maxWidth: 400 }}>
+              </h2>
+              <div className="flex border-b border-gray-200 max-w-xs mb-2 overflow-x-auto">
                 {selectedPokemon.types.map((typeInfo, idx) => (
-                  <Tab key={typeInfo.type.name} label={typeInfo.type.name.charAt(0).toUpperCase()+typeInfo.type.name.slice(1)} />
+                  <button
+                    key={typeInfo.type.name}
+                    onClick={() => setActiveType(idx)}
+                    className={`px-4 py-2 text-sm font-semibold focus:outline-none transition border-0 border-b-2 ${activeType === idx
+                      ? "border-blue-600 text-blue-700"
+                      : "border-transparent text-gray-700"
+                    }`}
+                  >
+                    {typeInfo.type.name.charAt(0).toUpperCase() + typeInfo.type.name.slice(1)}
+                  </button>
                 ))}
-              </Tabs>
+              </div>
               {selectedPokemon.types.map((typeInfo, idx) => (
-                <div key={typeInfo.type.name} hidden={activeType !== idx}>
-                  <Typography>Game Indices: <b>{selectedPokemon.game_indices.length}</b></Typography>
-                  <Typography>Moves: <b>{selectedPokemon.moves.length}</b></Typography>
+                <div key={typeInfo.type.name} hidden={activeType !== idx} className="mt-2">
+                  <div>Game Indices: <b>{selectedPokemon.game_indices.length}</b></div>
+                  <div>Moves: <b>{selectedPokemon.moves.length}</b></div>
                 </div>
               ))}
-            </Box>
+            </div>
           )}
-        </Box>
-      </Box>
-    </Container>
+        </div>
+      </div>
+    </div>
   );
 }
-
