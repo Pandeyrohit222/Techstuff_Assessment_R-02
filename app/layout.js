@@ -1,10 +1,7 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 
 const inter = Inter({ subsets: ['latin'] });
-const theme = createTheme();
 
 export const metadata = {
   title: 'Create Next App',
@@ -13,14 +10,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang='en'>
-      <body className={inter.className}>
-        <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <main className='flex min-h-screen flex-col items-center justify-between p-24'>{children}</main>
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+    <html lang="en">
+      <body className={`${inter.className} bg-gray-50 text-gray-900`}>
+        <main className="flex min-h-screen flex-col items-center justify-between p-8">
+          {children}
+        </main>
       </body>
     </html>
   );
